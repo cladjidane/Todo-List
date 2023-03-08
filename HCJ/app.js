@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(function (response) {
       return response.json();
     })
-    .then(function (json) {
-      json.map(item => {
-        displayList({text: item})
+    .then(function (tasks) {
+      tasks.map(task => {
+        displayList(task)
       })
     });
 
@@ -34,10 +34,13 @@ function submitTask(event) {
   let text = !input.value ? select.value : input.value.trim();
 
   if (text !== "") {
-    displayList({
-      text,
-      id: Date.now(),
-    });
+    let task = {
+      "id": Date.now(),
+      "task": text,
+      "date": Date.now(),
+      "status": "pending"
+    }
+    displayList(todo);
     input.value = "";
     select.value = "";
   } else {
