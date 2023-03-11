@@ -1,21 +1,16 @@
 /**
  * Load
  */
-let datas
 document.addEventListener("DOMContentLoaded", () => {
   fetch("https://cipa3:8890/")
     .then(function (response) {
       return response.json();
     })
     .then(function (tasks) {
-      tasks.map(task => {
-        displayList(task)
-      })
+      tasks.map((task) => {
+        displayList(task);
+      });
     });
-
-  if(datas) {
-    console.log(datas)
-  }
 });
 
 /**
@@ -31,16 +26,11 @@ form.addEventListener("submit", submitTask);
 
 function submitTask(event) {
   event.preventDefault();
-  let text = !input.value ? select.value : input.value.trim();
+  let task = !input.value ? select.value : input.value.trim();
 
-  if (text !== "") {
-    let task = {
-      "id": Date.now(),
-      "task": text,
-      "date": Date.now(),
-      "status": "pending"
-    }
-    displayList(todo);
+  if (task !== "") {
+    addTaskInBdd(task);
+
     input.value = "";
     select.value = "";
   } else {
@@ -48,17 +38,23 @@ function submitTask(event) {
   }
 }
 
-function displayList(todo) {
+function displayList(task) {
   const item = document.createElement("li");
-  item.setAttribute("data-key", todo.id);
+  item.setAttribute("data-key", task.id);
+  if (task.status === "finish") item.setAttribute("class", "ok");
 
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
-  input.addEventListener("click", itemOk);
+  input.addEventListener("click", updateItem);
   item.appendChild(input);
 
+  if (task.status === "finish") {
+    item.setAttribute("class", "ok");
+    input.setAttribute("checked", "checked");
+  }
+
   const txt = document.createElement("span");
-  txt.innerText = todo.text;
+  txt.innerText = task.task;
   item.appendChild(txt);
 
   const btn = document.createElement("button");
@@ -70,23 +66,65 @@ function displayList(todo) {
 
   list.appendChild(item);
   allItems.push(item);
-  console.log(allItems);
 }
 
-function itemOk(e) {
-  e.target.parentNode.classList.toggle("ok");
+function updateItem(e) {
+  const el = e.target.parentNode;
+  const id = el.getAttribute("data-key");
+  const status = el.getAttribute("class") !== "ok" ? "finish" : "pending";
+
+  var requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  fetch(
+    "https://cipa3:8890/update-task.php?id=" + id + "&status=" + status,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then(() => el.classList.toggle("ok"))
+    .catch((error) => console.log("error", error));
 }
 
 function deleteItem(e) {
-  if (e.target.parentNode.getAttribute("class") !== "ok") alert("INTERDIT");
-  else
-    allItems.forEach((el) => {
-      if (
-        e.target.parentNode.getAttribute("data-key") ===
-        el.getAttribute("data-key")
-      ) {
-        el.remove();
-        allItems = allItems.filter((li) => li.dataset.key !== el.dataset.key);
-      }
-    });
+  const el = e.target.parentNode;
+  const id = el.getAttribute("data-key");
+
+  if (el.getAttribute("class") !== "ok") {
+    alert("INTERDIT");
+    return;
+  }
+
+  var requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  fetch("https://cipa3:8890/delete-task.php?id=" + id, requestOptions)
+    .then((response) => response.json())
+    .then((result) => notice(result.message))
+    .catch((error) => console.log("error", error));
+
+  el.remove();
+}
+
+function addTaskInBdd(task) {
+  var formdata = new FormData();
+  formdata.append("task", task);
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  fetch("https://cipa3:8890/add-task.php", requestOptions)
+    .then((response) => response.json())
+    .then((tasks) => tasks.map((task) => displayList(task)))
+    .catch((error) => console.log("error", error));
+}
+
+function notice(message) {
+  alert(message);
 }
