@@ -1,9 +1,10 @@
 /* 
-  Positionnement
-  Dimensions
-  Texte
-  Bordures et fonds
-  Propriétés CSS3 ou spécifiques navigateurs
+  Organisation
+  1-Positionnement
+  2-Dimensions
+  3-Texte
+  4-Bordures et fonds
+  5-Propriétés CSS3 ou spécifiques navigateurs
 */
 
 *,
@@ -21,88 +22,100 @@ body {
 }
 
 h1 {
+  margin: 30px 0;
   text-align: center;
   font-size: 30px;
-  margin: 30px 0;
 }
 
 h2 {
+  margin-bottom: 50px;
   text-align: center;
   font-size: 20px;
-  margin-bottom: 50px;
 }
 
+/* Formulaire d'ajout d'une tâche */
+form {
+  display: block;
+  max-width: 1200px;
+  min-width: 320px;
+  width: 70%;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}
+
+form .fields {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+form label {
+  display: block;
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+form input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 15px;
+}
+
+form button {
+  padding: 10px;
+  font-size: 15px;
+}
+
+/* Liste */
 .list-todo {
-  list-style-type: none;
-  margin: 20px auto 0;
   width: 70%;
   max-width: 1200px;
   min-width: 320px;
+  margin: 20px auto 0;
+  list-style-type: none;
 }
+
 .list-todo li {
-  font-size: 15px;
-  width: 100%;
-  background: #f1f1f1;
   display: flex;
   align-items: center;
-  padding: 5px;
-  color: #333;
+  width: 100%;
   margin: 5px 0;
   padding: 10px;
+  color: #333;
+  font-size: 15px;
+  background: #f1f1f1;
   border-radius: 10px;
 }
+
 .list-todo li input {
   width: 20px;
   height: 20px;
   margin-left: 10px;
 }
+
 .list-todo li button {
-  margin-left: auto;
-  border: none;
-  background: transparent;
-  padding: 0;
   height: 20px;
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
 }
+
 .list-todo button img {
   width: 20px;
   pointer-events: none;
 }
+
 .list-todo li span {
-  font-size: 15px;
   margin-left: 20px;
+  font-size: 15px;
 }
+
 .list-todo li.ok span {
   text-decoration: line-through;
 }
 
-form {
-  display: block;
-  margin: 0 auto;
-  width: 70%;
-  max-width: 1200px;
-  min-width: 320px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-}
-form .fields {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-form label {
-  color: black;
-  display: block;
-  font-size: 15px;
-  font-weight: bold;
-}
-form input {
-  width: 100%;
-  padding: 10px;
-  font-size: 15px;
-  margin: 10px 0;
-}
-form button {
-  padding: 10px;
-  font-size: 15px;
-}
