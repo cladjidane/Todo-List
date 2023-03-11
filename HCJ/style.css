@@ -1,3 +1,11 @@
+/* 
+  Positionnement
+  Dimensions
+  Texte
+  Bordures et fonds
+  Propriétés CSS3 ou spécifiques navigateurs
+*/
+
 *,
 ::before,
 ::after {
@@ -7,9 +15,9 @@
 }
 
 body {
-  background: radial-gradient(rgb(233, 233, 233), rgb(187, 187, 187));
-  font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(rgb(233, 233, 233), rgb(187, 187, 187));
 }
 
 h1 {
@@ -29,7 +37,7 @@ h2 {
   margin: 20px auto 0;
   width: 70%;
   max-width: 1200px;
-  min-width: 400px;
+  min-width: 320px;
 }
 .list-todo li {
   font-size: 15px;
@@ -72,7 +80,7 @@ form {
   margin: 0 auto;
   width: 70%;
   max-width: 1200px;
-  min-width: 400px;
+  min-width: 320px;
   padding: 20px;
   background: white;
   border-radius: 10px;
@@ -88,14 +96,8 @@ form label {
   font-size: 15px;
   font-weight: bold;
 }
-form select {
-    width: 50%;
-    padding: 12px 10px;
-    font-size: 15px;
-    margin: 10px 0;
-}
 form input {
-  width: 50%;
+  width: 100%;
   padding: 10px;
   font-size: 15px;
   margin: 10px 0;
