@@ -22,6 +22,22 @@ function submitTask(event) {
   }
 }
 
+function addTaskInBdd(task) {
+  var formdata = new FormData();
+  formdata.append("task", task);
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  fetch("https://cipa3:8890/add-task.php", requestOptions)
+    .then((response) => response.json())
+    .then((tasks) => tasks.map((task) => displayList(task)))
+    .catch((error) => console.log("error", error));
+}
+
 function displayList(task) {
   const item = document.createElement("li");
   item.setAttribute("data-key", task.id);
@@ -62,20 +78,4 @@ function deleteItem(e) {
   // A faire - suppression en BDD
   if (el.getAttribute("class") !== "ok") alert("INTERDIT");
   else el.remove();
-}
-
-function addTaskInBdd(task) {
-  var formdata = new FormData();
-  formdata.append("task", task);
-
-  var requestOptions = {
-    method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
-    .then((response) => response.json())
-    .then((tasks) => tasks.map((task) => displayList(task)))
-    .catch((error) => console.log("error", error));
 }
