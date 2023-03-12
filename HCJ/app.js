@@ -13,7 +13,7 @@ function submitTask(event) {
   let task = !input.value ? select.value : input.value.trim();
 
   if (task !== "") {
-    displayList({});
+    displayList({ task: task, id: Date.now(), status: "pending" });
 
     input.value = "";
     select.value = "";
@@ -25,7 +25,6 @@ function submitTask(event) {
 function displayList(task) {
   const item = document.createElement("li");
   item.setAttribute("data-key", task.id);
-  if (task.status === "finish") item.setAttribute("class", "ok");
 
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
@@ -53,13 +52,11 @@ function displayList(task) {
 
 function updateItem(e) {
   const el = e.target.parentNode;
-  // A faire - changer le status en BDD
-  el.classList.toggle("ok")
+  el.classList.toggle("ok");
 }
 
 function deleteItem(e) {
   const el = e.target.parentNode;
-  // A faire - suppression en BDD
   if (el.getAttribute("class") !== "ok") alert("INTERDIT");
   else el.remove();
 }
