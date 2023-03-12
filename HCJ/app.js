@@ -1,19 +1,4 @@
 /**
- * Load
- */
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://cipa3:8890/")
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (tasks) {
-      tasks.map((task) => {
-        displayList(task);
-      });
-    });
-});
-
-/**
  * Manage Task
  */
 const form = document.querySelector("form");
