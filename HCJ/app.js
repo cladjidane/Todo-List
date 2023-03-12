@@ -2,7 +2,7 @@
  * Load
  */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://cipa3:8890/")
+  fetch("https://cipa3:8890/tasks.php")
     .then(function (response) {
       return response.json();
     })
@@ -41,7 +41,6 @@ function submitTask(event) {
 function displayList(task) {
   const item = document.createElement("li");
   item.setAttribute("data-key", task.id);
-  if (task.status === "finish") item.setAttribute("class", "ok");
 
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
@@ -65,7 +64,6 @@ function displayList(task) {
   item.appendChild(btn);
 
   list.appendChild(item);
-  allItems.push(item);
 }
 
 function updateItem(e) {
