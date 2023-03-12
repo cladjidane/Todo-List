@@ -2,15 +2,11 @@
  * Load
  */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://cipa3:8890/tasks.php")
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (tasks) {
-      tasks.map((task) => {
-        displayList(task);
-      });
+  fetchData("https://cipa3:8890/tasks.php", "GET", null, function (tasks) {
+    tasks.map((task) => {
+      displayList(task);
     });
+  });
 });
 
 /**
@@ -20,7 +16,6 @@ const form = document.querySelector("form");
 const list = document.querySelector("ul");
 const input = document.querySelector("form input");
 const select = document.querySelector("form select");
-let allItems = [];
 
 form.addEventListener("submit", submitTask);
 
@@ -68,61 +63,61 @@ function displayList(task) {
 
 function updateItem(e) {
   const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
-  const status = el.getAttribute("class") !== "ok" ? "finish" : "pending";
-
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
+  const datas = {
+    id: el.getAttribute("data-key"),
+    status: el.getAttribute("class") !== "ok" ? "finish" : "pending",
   };
 
-  fetch(
-    "https://cipa3:8890/update-task.php?id=" + id + "&status=" + status,
-    requestOptions
-  )
-    .then((response) => response.json())
-    .then(() => el.classList.toggle("ok"))
-    .catch((error) => console.log("error", error));
+  fetchData("https://cipa3:8890/update-task.php", "POST", datas, () =>
+    el.classList.toggle("ok")
+  );
 }
 
 function deleteItem(e) {
   const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
 
   if (el.getAttribute("class") !== "ok") {
     alert("INTERDIT");
     return;
   }
 
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/delete-task.php?id=" + id, requestOptions)
-    .then((response) => response.json())
-    .then((result) => notice(result.message))
-    .catch((error) => console.log("error", error));
+  fetchData(
+    "https://cipa3:8890/delete-task.php",
+    "POST",
+    { id: el.getAttribute("data-key") },
+    () => notice(result.message)
+  );
 
   el.remove();
 }
 
 function addTaskInBdd(task) {
-  var formdata = new FormData();
-  formdata.append("task", task);
-
-  var requestOptions = {
-    method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
-    .then((response) => response.json())
-    .then((tasks) => tasks.map((task) => displayList(task)))
-    .catch((error) => console.log("error", error));
+  fetchData("https://cipa3:8890/add-task.php", "POST", task, (tasks) =>
+    tasks.map((task) => displayList(task))
+  );
 }
 
 function notice(message) {
   alert(message);
+}
+
+function fetchData(url, method = "GET", datas, callBack) {
+  let formdata;
+  if (datas) {
+    formdata = new FormData();
+    for (var key in datas) {
+      formdata.append(key, datas[key]);
+    }
+  }
+
+  var requestOptions = {
+    method: method,
+    body: formdata,
+    redirect: "follow",
+  };
+
+  fetch(url, requestOptions)
+    .then((response) => response.json())
+    .then(callBack)
+    .catch((error) => console.log("error", error));
 }
