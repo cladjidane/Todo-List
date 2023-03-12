@@ -92,7 +92,7 @@ function deleteItem(e) {
 }
 
 function addTaskInBdd(task) {
-  fetchData("https://cipa3:8890/add-task.php", "POST", task, (tasks) =>
+  fetchData("https://cipa3:8890/add-task.php", "POST", {task: task}, (tasks) =>
     tasks.map((task) => displayList(task))
   );
 }
