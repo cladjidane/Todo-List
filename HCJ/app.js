@@ -23,6 +23,22 @@ function submitTask(event) {
   }
 }
 
+function addTaskInBdd(task) {
+  var formdata = new FormData();
+  formdata.append("task", task);
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  fetch("https://cipa3:8890/add-task.php", requestOptions)
+    .then((response) => response.json())
+    .then((tasks) => tasks.map((task) => displayList(task)))
+    .catch((error) => console.log("error", error));
+}
+
 function displayList(task) {
   const item = document.createElement("li");
   item.setAttribute("data-key", task.id);
@@ -50,64 +66,17 @@ function displayList(task) {
   item.appendChild(btn);
 
   list.appendChild(item);
-  allItems.push(item);
 }
 
 function updateItem(e) {
   const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
-  const status = el.getAttribute("class") !== "ok" ? "finish" : "pending";
-
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-
-  fetch(
-    "https://cipa3:8890/update-task.php?id=" + id + "&status=" + status,
-    requestOptions
-  )
-    .then((response) => response.json())
-    .then(() => el.classList.toggle("ok"))
-    .catch((error) => console.log("error", error));
+  el.classList.toggle("ok");
 }
 
 function deleteItem(e) {
   const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
-
-  if (el.getAttribute("class") !== "ok") {
-    alert("INTERDIT");
-    return;
-  }
-
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/delete-task.php?id=" + id, requestOptions)
-    .then((response) => response.json())
-    .then((result) => notice(result.message))
-    .catch((error) => console.log("error", error));
-
-  el.remove();
-}
-
-function addTaskInBdd(task) {
-  var formdata = new FormData();
-  formdata.append("task", task);
-
-  var requestOptions = {
-    method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
-    .then((response) => response.json())
-    .then((tasks) => tasks.map((task) => displayList(task)))
-    .catch((error) => console.log("error", error));
+  if (el.getAttribute("class") !== "ok") alert("INTERDIT");
+  else el.remove();
 }
 
 function notice(message) {
