@@ -13,29 +13,13 @@ function submitTask(event) {
   let task = !input.value ? select.value : input.value.trim();
 
   if (task !== "") {
-    addTaskInBdd(task);
+    displayList({});
 
     input.value = "";
     select.value = "";
   } else {
     alert("veuillez saisir une tâche !");
   }
-}
-
-function addTaskInBdd(task) {
-  var formdata = new FormData();
-  formdata.append("task", task);
-
-  var requestOptions = {
-    method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
-    .then((response) => response.json())
-    .then((tasks) => tasks.map((task) => displayList(task)))
-    .catch((error) => console.log("error", error));
 }
 
 function displayList(task) {
