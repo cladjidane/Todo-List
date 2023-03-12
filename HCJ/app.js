@@ -53,9 +53,6 @@ function displayList(task) {
 
   const btn = document.createElement("button");
   btn.addEventListener("click", deleteItem);
-  const img = document.createElement("img");
-  img.setAttribute("src", "ressources/fermer.svg");
-  btn.appendChild(img);
   item.appendChild(btn);
 
   list.appendChild(item);
