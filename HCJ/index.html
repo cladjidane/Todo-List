@@ -7,20 +7,35 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Todo List</h1>
-    <h2>Gestionnaire de tâches</h2>
+    <header>
+      <img src="ressources/accenture.jpeg" alt="">
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Tâches</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </header>
 
-    <form>
-      <label for="item">Ajouter une tâche</label>
-      <div class="fields">
-        <input type="text" id="item" placeholder="Intitulé de la tâche" />
-      </div>
+    <main>
+      <h1>Todo List</h1>
+      <h2>Gestionnaire de tâches</h2>
 
-      <button type="submit">Ajouter</button>
-    </form>
+      <form>
+        <label for="item">Ajouter une tâche</label>
+        <div class="fields">
+          <input type="text" id="item" placeholder="Intitulé de la tâche" />
+        </div>
 
-    <ul class="list-todo">
-    </ul>
+        <button type="submit">Ajouter</button>
+      </form>
+
+      <ul class="list-todo">
+      </ul>
+    </main>
+
+    <footer>
+      <span>Accenture 2023</span>
+    </footer>    
 
     <script src="app.js"></script>
   </body>
