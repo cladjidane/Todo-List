@@ -158,6 +158,54 @@ main {
 
 /* Page tâches */
 
+/* Message */
+.message {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message > div {
+  position: absolute;
+  padding: 20px;
+
+  width: 400px;
+  height: 300px;
+
+  background-color: #f1f1f1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.message .close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  border-radius: 50px;
+  font-size: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
+
+  background-color: red;
+  color: white;
+}
+
 /* Formulaire d'ajout d'une tâche */
 form {
   display: block;
