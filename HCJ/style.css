@@ -173,7 +173,7 @@ main {
 }
 
 .message > div {
-  position: absolute;
+  position: relative;
   padding: 20px;
 
   width: 400px;
