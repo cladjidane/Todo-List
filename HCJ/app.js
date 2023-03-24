@@ -2,7 +2,7 @@
  * Load
  */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://cipa3:8890/tasks.php")
+  fetch("http://cipa3/tasks.php")
     .then(function (response) {
       return response.json();
     })
@@ -117,7 +117,7 @@ function addTaskInBdd(task) {
     redirect: "follow",
   };
 
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
+  fetch("http://cipa3/add-task.php", requestOptions)
     .then((response) => response.json())
     .then((tasks) => tasks.map((task) => displayList(task)))
     .catch((error) => console.log("error", error));
