@@ -59,7 +59,7 @@ h2 {
   margin-left: 10px;
 }
 
-.list-todo li button {
+.list-todo li .btdelete {
   height: 20px;
   width: 20px;
   margin-left: auto;
@@ -70,7 +70,7 @@ h2 {
   cursor: pointer;
 }
 
-.list-todo li button:hover {
+.list-todo li .btdelete:hover {
   opacity: .5;
 }
 
@@ -83,7 +83,7 @@ h2 {
   text-decoration: line-through;
 }
 
-form {
+.form-add  {
   display: block;
   max-width: 1200px;
   min-width: 320px;
@@ -94,34 +94,47 @@ form {
   border-radius: 10px;
 }
 
-form .fields {
+.form-add .fields {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-form label {
+.form-add label {
   display: block;
   color: black;
   font-size: 15px;
   font-weight: bold;
 }
 
-form select {
+.form-add select {
   width: 50%;
   margin: 10px 0;
   padding: 12px 10px;
   font-size: 15px;
 }
 
-form input {
+.form-add input {
   width: 50%;
   margin: 10px 0;
   padding: 10px;
   font-size: 15px;
 }
 
-form button {
+.form-add button {
   padding: 10px;
   font-size: 15px;
+}
+
+.form-checked {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.form-checked button {
+  border: none;
+  background: silver;
+  font-size: 10px;
+  padding: 4px 3px;
 }
