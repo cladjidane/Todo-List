@@ -20,7 +20,6 @@ const form = document.querySelector("form");
 const list = document.querySelector("ul");
 const input = document.querySelector("form input");
 const select = document.querySelector("form select");
-let allItems = [];
 
 form.addEventListener("submit", submitTask);
 
@@ -77,7 +76,7 @@ function updateItem(e) {
   };
 
   fetch(
-    "https://cipa3:8890/update-task.php?id=" + id + "&status=" + status,
+    "http://cipa3/update-task.php?id=" + id + "&status=" + status,
     requestOptions
   )
     .then((response) => response.json())
@@ -99,7 +98,7 @@ function deleteItem(e) {
     redirect: "follow",
   };
 
-  fetch("https://cipa3:8890/delete-task.php?id=" + id, requestOptions)
+  fetch("http://cipa3/delete-task.php?id=" + id, requestOptions)
     .then((response) => response.json())
     .then((result) => notice(result.message))
     .catch((error) => console.log("error", error));
