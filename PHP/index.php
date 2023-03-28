@@ -1,3 +1,11 @@
+<?php 
+
+include('db.class.php');
+
+$db = new Db();
+$tasks = $db->getTasks();
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -26,7 +34,13 @@
       <button type="submit">Ajouter</button>
     </form>
 
-    <ul class="list-todo"></ul>
+    <ul class="list-todo">
+        <?php if($tasks) : ?>
+            <?php foreach($tasks as $key => $task) : ?>
+                
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </ul>
 
     <script src="app.js"></script>
   </body>
