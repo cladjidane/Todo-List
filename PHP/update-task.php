@@ -10,7 +10,6 @@ header('Access-Control-Allow-Headers: X-Requested-With');
 
 include('db.class.php');
 
-$db = new Db();
-$result = $db->updateTask($_REQUEST['id'], $_REQUEST['status']);
-
-echo json_encode($result);
+/**
+ * TODO
+ */

@@ -10,7 +10,6 @@ header('Access-Control-Allow-Headers: X-Requested-With');
 
 include('db.class.php');
 
-$db = new Db();
-$result = $db->deleteTask($_REQUEST['id']);
-
-echo json_encode($result);
+/**
+ * TODO
+ */

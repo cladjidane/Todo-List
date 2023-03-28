@@ -66,44 +66,17 @@ function displayList(task) {
 }
 
 function updateItem(e) {
-  const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
-  const status = el.getAttribute("class") !== "ok" ? "finish" : "pending";
-
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-
-  fetch(
-    "http://cipa3/update-task.php?id=" + id + "&status=" + status,
-    requestOptions
-  )
-    .then((response) => response.json())
-    .then(() => el.classList.toggle("ok"))
-    .catch((error) => console.log("error", error));
+  /**
+   * TODO
+   * 
+   * Aide : 
+   */
 }
 
 function deleteItem(e) {
-  const el = e.target.parentNode;
-  const id = el.getAttribute("data-key");
-
-  if (el.getAttribute("class") !== "ok") {
-    alert("INTERDIT");
-    return;
-  }
-
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-
-  fetch("http://cipa3/delete-task.php?id=" + id, requestOptions)
-    .then((response) => response.json())
-    .then((result) => notice(result.message))
-    .catch((error) => console.log("error", error));
-
-  el.remove();
+  /**
+   * TODO
+   */
 }
 
 function addTaskInBdd(task) {
