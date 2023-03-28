@@ -5,7 +5,6 @@ const form = document.querySelector("form");
 const list = document.querySelector("ul");
 const input = document.querySelector("form input");
 const select = document.querySelector("form select");
-let allItems = [];
 
 form.addEventListener("submit", submitTask);
 
