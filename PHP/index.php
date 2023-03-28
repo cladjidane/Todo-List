@@ -37,7 +37,7 @@ $tasks = $db->getTasks();
     <ul class="list-todo">
         <?php if($tasks) : ?>
             <?php foreach($tasks as $key => $task) : ?>
-                
+                <li data-key="<?php echo $task->id; ?>" class=""><input type="checkbox"><span><?php echo $task->task; ?></span><button></button></li>
             <?php endforeach; ?>
         <?php endif; ?>
     </ul>
