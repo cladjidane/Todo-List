@@ -2,7 +2,7 @@
  * Load
  */
 document.addEventListener("DOMContentLoaded", () => {
-  fetchData("https://cipa3:8890/tasks.php", "GET", null, function (tasks) {
+  fetchData("http://cipa3/tasks.php", "GET", null, function (tasks) {
     tasks.map((task) => {
       displayList(task);
     });
@@ -65,7 +65,7 @@ function updateItem(e) {
     status: el.getAttribute("class") !== "ok" ? "finish" : "pending",
   };
 
-  fetchData("https://cipa3:8890/update-task.php", "POST", datas, () =>
+  fetchData("http://cipa3/update-task.php", "POST", datas, () =>
     el.classList.toggle("ok")
   );
 }
@@ -79,17 +79,17 @@ function deleteItem(e) {
   }
 
   fetchData(
-    "https://cipa3:8890/delete-task.php",
+    "http://cipa3/delete-task.php",
     "POST",
     { id: el.getAttribute("data-key") },
-    () => notice(result.message)
+    (result) => notice(result.message)
   );
 
   el.remove();
 }
 
 function addTaskInBdd(task) {
-  fetchData("https://cipa3:8890/add-task.php", "POST", {task: task}, (tasks) =>
+  fetchData("http://cipa3/add-task.php", "POST", {task: task}, (tasks) =>
     tasks.map((task) => displayList(task))
   );
 }
