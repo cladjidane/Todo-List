@@ -12,4 +12,6 @@ include('db.class.php');
 
 /**
  * TODO
+ * 
+ * appelez les bonnes methodes de l'objet Db
  */

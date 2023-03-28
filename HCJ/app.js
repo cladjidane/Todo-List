@@ -66,16 +66,35 @@ function displayList(task) {
 }
 
 function updateItem(e) {
+
+  const el = e.target.parentNode;
+  const id = el.getAttribute("data-key");
+  const status = el.getAttribute("class") !== "ok" ? "finish" : "pending";
+
   /**
+   * ...
+   * 
    * TODO
    * 
-   * Aide : 
+   * Aide : requête très proche de celle de "addTaskInBdd"
+   * Mais en GET et non en POST
+   * En GET il n'y a pas de formData, mais des paramètres passés directement dans l'URL
+   * Ex page.php?id=12&mode=update
+   * 
+   * Attention à bien conserver requestOptions (mais sans formData et avec le bon verbe HTTP)
+   * 
+   * Une fois la reqête effectuée vous devez simplement definir la class du li pour définir son état
+   * Ceci est déjà dans le code original vu ensemble
    */
 }
 
 function deleteItem(e) {
   /**
+   * ...
+   * 
    * TODO
+   * 
+   * A vous de creuser :)
    */
 }
 

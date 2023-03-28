@@ -48,25 +48,21 @@ class Db {
     }
 
     public function updateTask($id, $status) {
-        $sql = 'UPDATE tasks
-        SET status = :status
-        WHERE id=:id';
-
-        $sth = $this->pdo->prepare($sql);
-        $r = $sth->execute([':id' => $id, ':status' => $status]);
-
-        if(!$r) return array("message" => "Erreur de modification en base de données");
+        /**
+         * TODO
+         * 
+         * Exemple de requête SQL
+         * UPDATE tasks SET status = :status WHERE id=:id
+         * 
+         * Voir prepare et execute dans addTask pour vous inspirer 
+         */
     }
 
     public function deleteTask($id) {
-        $sql = 'DELETE
-        FROM tasks
-        WHERE id=:id';
-
-        $sth = $this->pdo->prepare($sql);
-        $r = $sth->execute([':id' => $id]);
-
-        if($r) return array("message" => "La tâche est supprimée !");
-        else return array("message" => "Erreur de suppression en base de données");
+        /**
+         * TODO
+         * 
+         * A vous de jouer :)
+         */
     }
 }
