@@ -1,8 +1,16 @@
 /**
+ * Manage Task
+ */
+const form = document.querySelector("form");
+const list = document.querySelector("ul");
+const input = document.querySelector("form input");
+const select = document.querySelector("form select");
+
+/**
  * Load
  */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://cipa3:8890/tasks.php")
+  fetch("http://cipa3/tasks.php")
     .then(function (response) {
       return response.json();
     })
@@ -11,16 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
         displayList(task);
       });
     });
-});
 
-/**
- * Manage Task
- */
-const form = document.querySelector("form");
-const list = document.querySelector("ul");
-const input = document.querySelector("form input");
-const select = document.querySelector("form select");
-let allItems = [];
+    // common tasks
+    fetch("http://cipa3/common-tasks.php")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (commonTasks) {
+      commonTasks.map((task, i) => {
+        if(i > 5) return
+        let option = document.createElement("option");
+        option.setAttribute("value", task.task);
+        option.innerText = task.task
+        select.appendChild(option);
+      });
+    });
+});
 
 form.addEventListener("submit", submitTask);
 
@@ -77,7 +91,7 @@ function updateItem(e) {
   };
 
   fetch(
-    "https://cipa3:8890/update-task.php?id=" + id + "&status=" + status,
+    "http://cipa3/update-task.php?id=" + id + "&status=" + status,
     requestOptions
   )
     .then((response) => response.json())
@@ -99,7 +113,7 @@ function deleteItem(e) {
     redirect: "follow",
   };
 
-  fetch("https://cipa3:8890/delete-task.php?id=" + id, requestOptions)
+  fetch("http://cipa3/delete-task.php?id=" + id, requestOptions)
     .then((response) => response.json())
     .then((result) => notice(result.message))
     .catch((error) => console.log("error", error));
@@ -117,7 +131,7 @@ function addTaskInBdd(task) {
     redirect: "follow",
   };
 
-  fetch("https://cipa3:8890/add-task.php", requestOptions)
+  fetch("http://cipa3/add-task.php", requestOptions)
     .then((response) => response.json())
     .then((tasks) => tasks.map((task) => displayList(task)))
     .catch((error) => console.log("error", error));

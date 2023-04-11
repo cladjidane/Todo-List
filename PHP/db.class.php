@@ -69,4 +69,14 @@ class Db {
         if($r) return array("message" => "La tâche est supprimée !");
         else return array("message" => "Erreur de suppression en base de données");
     }
+
+    public function commonTasks(){
+        $sql = 'SELECT COUNT(`task`) AS nombre, task FROM `tasks` GROUP BY `task` ORDER BY nombre DESC';
+
+        $sth = $this->pdo->prepare($sql);
+        $sth->execute();
+        $allResults = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        return $allResults;
+    }
 }
