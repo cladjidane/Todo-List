@@ -1,32 +1,9 @@
-<?php 
-
-include('db.class.php');
-
-$db = new Db();
-
-if($_SERVER['REQUEST_METHOD'] == "POST") {
-    switch ($_REQUEST['mode']) {
-        case 'add':
-            $task = $_REQUEST['field-task'] ? $_REQUEST['field-task'] : $_REQUEST['select-task'];
-            $db->addTask($task);
-            break;
-        
-        case 'update':
-            $status = $_REQUEST['status'] == "on" ? "finish" : "pending";
-            $db->updateTask($_REQUEST['id'], $status);
-            break;
-    }
-}
-elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-    switch ($_REQUEST['mode']) {
-        case 'delete':
-            $db->deleteTask($_REQUEST['id']);
-            break;
-    }
-}
-
-$tasks = $db->getTasks();
-
+<?php
+$tasks = array(
+  array('task' => "Passer le balai", 'id' => 1, 'status' => "wip"),
+  array('task' => "Saluer le boss", 'id' => 2, 'status' => "finish"),
+  array('task' => "Couper l'ordi", 'id' => 1, 'status' => "wip")
+)
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -58,22 +35,28 @@ $tasks = $db->getTasks();
     </form>
 
     <ul class="list-todo">
-        <?php if($tasks) : ?>
-            <?php foreach($tasks as $key => $task) : ?>
-                <li data-key="<?php echo $task->id; ?>" class="<?php echo $task->status == "finish" ? "ok": ""; ?>">
-                    <form class="form-checked" method="post">
-                        <input <?php echo $task->status == "finish" ? "checked": ""; ?> type="checkbox" name="status"> 
-                        <input type="hidden" name="mode" value="update" />
-                        <input type="hidden" name="id" value="<?php echo $task->id; ?>" />
-                        <button>Valider</button>
-                    </form>
-                    <span><?php echo $task->task; ?></span>
-                    <a href="?mode=delete&id=<?php echo $task->id; ?>" class="btdelete"></a>
-                </li>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </ul>
 
-    <script src="app.js"></script>
+      <?php if($tasks) : ?>
+        <?php foreach($tasks as $key => $task) : ?>
+
+          <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
+            <input
+              <?php echo $task['status'] == "finish" ? "checked": ""; ?>
+              type="checkbox"
+              name="status"
+            >
+            <span>
+              <?php echo $task['task']; ?>
+            </span>
+            <a
+              href="?mode=delete&id=<?php echo $task['id']; ?>"
+              class="btdelete">
+            </a>
+          </li>
+
+        <?php endforeach; ?>
+      <?php endif; ?>
+
+    </ul>
   </body>
 </html>
