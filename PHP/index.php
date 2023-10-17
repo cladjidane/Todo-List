@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
+$notice = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mode']) && $_POST['mode'] == 'add') {
   $taskName = $_POST['field-task'] ?? '';
@@ -10,22 +11,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mode']) && $_POST['mod
   if (empty($taskName) && empty($selectedTask)) {
     $notice = "Le nom de la tâche est vide !";
   } else {
-    if (!isset($_SESSION['tasks'])) {
-      $_SESSION['tasks'] = [];
-    }
+      if (!isset($_SESSION['tasks'])) {
+        $_SESSION['tasks'] = [];
+      }
 
-    if (!empty($taskName)) {
-      $_SESSION['tasks'][] = $taskName;
-    } elseif (!empty($selectedTask)) {
-      $_SESSION['tasks'][] = $selectedTask;
-    }
+      if (!empty($taskName)) {
+        $newTask = array('task' => $taskName, 'id' => count($_SESSION['tasks']) + 1, 'status' => 'wip');
+      } elseif (!empty($selectedTask)) {
+        $newTask = array('task' => $selectedTask, 'id' => count($_SESSION['tasks']) + 1, 'status' => 'wip');
+      }
 
-    $notice = "Tâche ajoutée avec succès.";
+      $_SESSION['tasks'][] = $newTask;
+
+    $notice = "Tâche ajoutée avec succès !";
   }
 }
 
 $tasks = $_SESSION['tasks'];
-var_dump($tasks);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -59,6 +61,10 @@ var_dump($tasks);
     <button type="submit">Ajouter</button>
 
   </form>
+
+  <?php if($notice != null) : ?>
+    <div class="notice"><?php echo $notice; ?></div>
+  <?php endif; ?>
 
   <ul class="list-todo">
     <?php if($tasks) : ?>

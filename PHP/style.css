@@ -33,6 +33,17 @@ h2 {
   font-size: 20px;
 }
 
+.notice {
+  padding: 20px;
+  width: 70%;
+  max-width: 1200px;
+  min-width: 320px;
+  margin: 20px auto 0;
+  border: 1px solid black;
+  border-radius: 10px;
+  background: rgb(178, 233, 177);
+}
+
 .list-todo {
   width: 70%;
   max-width: 1200px;
