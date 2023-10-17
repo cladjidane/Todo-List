@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('error_log', 'error.log');
 
 $tasks = array(
   array('task' => "Passer le balai", 'id' => 1, 'status' => "wip"),
@@ -7,13 +11,17 @@ $tasks = array(
 );
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-    $field_task = $_POST['field-task'];
-    $select_task = $_POST['select-task'];
+  $field_task = $_POST['field-task'];
+  $select_task = $_POST['select-task'];
 
-    array_push( array('task' => $field_task, 'id' => count($tasks) + 1, 'status' => "wip"), $tasks);
+  array_push($tasks, array('task' => $field_task, 'id' => count($tasks) + 1, 'status' => "wip"));
 }
-elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-   // Todo ...
+
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+  // $field_task = $_GET['field-task'];
+  // $select_task = $_GET['select-task'];
+
+  //array_push($tasks, array('task' => $field_task, 'id' => count($tasks) + 1, 'status' => "wip"));
 }
 
 ?>
@@ -31,9 +39,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
     <h1>Todo List</h1>
     <h2>Gestionnaire de tâches</h2>
 
-    <form class="form-add" method="post" action="traitement.php">
+    <form class="form-add" method="post" action="">
 
-    
       <label for="item">Ajouter une tâche</label>
       <div class="fields">
         <input name="field-task" type="text" id="item" placeholder="Intitulé de la tâche" />
@@ -47,29 +54,31 @@ elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
       </div>
       <input type="hidden" name="mode" value="add" />
 
-      <input  type="submit" value="Ajouter"/>
-      ou
       <button type="submit">Ajouter</button>
 
     </form>
 
     <ul class="list-todo">
       <?php if($tasks) : ?>
-        <?php foreach($tasks as $key => $task) : ?>
-          <li data-key="<?php echo $task->id; ?>" class="<?php echo $task->status == "finish" ? "ok": ""; ?>">
+          <?php foreach($tasks as $key => $task) : ?>
 
-            <form class="form-checked" method="post">
-              <input <?php echo $task->status == "finish" ? "checked": ""; ?> type="checkbox" name="status">
-              <input type="hidden" name="mode" value="update" />
-              <input type="hidden" name="id" value="<?php echo $task->id; ?>" />
-              <button>Valider</button>
-            </form>
+            <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
+              <input
+                <?php echo $task['status'] == "finish" ? "checked": ""; ?>
+                type="checkbox"
+                name="status"
+              >
+              <span>
+                <?php echo $task['task']; ?>
+              </span>
+              <a
+                href="?mode=delete&id=<?php echo $task['id']; ?>"
+                class="btdelete">
+              </a>
+            </li>
 
-            <span><?php echo $task->task; ?></span>
-            <a href="?mode=delete&id=<?php echo $task->id; ?>" class="btdelete"></a>
-          </li>
-        <?php endforeach; ?>
-      <?php endif; ?>
+          <?php endforeach; ?>
+        <?php endif; ?>
     </ul>
 </body>
 
