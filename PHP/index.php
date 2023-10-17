@@ -1,8 +1,16 @@
 <?php 
 
+$tasks = array(
+  array('task' => "Passer le balai", 'id' => 1, 'status' => "wip"),
+  array('task' => "Saluer le boss", 'id' => 2, 'status' => "finish"),
+  array('task' => "Couper l'ordi", 'id' => 1, 'status' => "wip")
+);
+
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     $field_task = $_POST['field-task'];
     $select_task = $_POST['select-task'];
+
+    array_push( array('task' => $field_task, 'id' => count($tasks) + 1, 'status' => "wip"), $tasks);
 }
 elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
    // Todo ...
