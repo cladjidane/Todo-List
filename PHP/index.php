@@ -1,30 +1,12 @@
 <?php 
 
-include('db.class.php');
-
-$db = new Db();
-
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-    switch ($_REQUEST['mode']) {
-        case 'add':
-            $task = $_REQUEST['field-task'] ? $_REQUEST['field-task'] : $_REQUEST['select-task'];
-            $db->addTask($task);
-            break;
-        case 'update':
-            $status = $_REQUEST['status'] == "on" ? "finish" : "pending";
-            $db->updateTask($_REQUEST['id'], $status);
-            break;
-    }
+    $field_task = $_POST['field-task'];
+    $select_task = $_POST['select-task'];
 }
 elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
-    switch ($_REQUEST['mode']) {
-        case 'delete':
-            $db->deleteTask($_REQUEST['id']);
-            break;
-    }
+   // Todo ...
 }
-
-$tasks = $db->getTasks();
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +23,9 @@ $tasks = $db->getTasks();
     <h1>Todo List</h1>
     <h2>Gestionnaire de tâches</h2>
 
-    <form class="form-add" method="post">
+    <form class="form-add" method="post" action="traitement.php">
+
+    
       <label for="item">Ajouter une tâche</label>
       <div class="fields">
         <input name="field-task" type="text" id="item" placeholder="Intitulé de la tâche" />
@@ -55,7 +39,10 @@ $tasks = $db->getTasks();
       </div>
       <input type="hidden" name="mode" value="add" />
 
+      <input  type="submit" value="Ajouter"/>
+      ou
       <button type="submit">Ajouter</button>
+
     </form>
 
     <ul class="list-todo">
