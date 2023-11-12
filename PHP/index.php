@@ -1,10 +1,17 @@
+
+
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
 $notice = null;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mode']) && $_POST['mode'] == 'add') {
+if (
+  $_SERVER['REQUEST_METHOD'] == 'POST' && // On est en POST ?
+  isset($_POST['mode']) && // Y a t-il une information de mode
+  $_POST['mode'] == 'add' // Oui, est-ce add ?
+) { // Si oui ↓↓↓
+
   $taskName = $_POST['field-task'] ?? '';
   $selectedTask = $_POST['select-task'] ?? '';
 
@@ -29,6 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mode']) && $_POST['mod
 
 $tasks = $_SESSION['tasks'];
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -71,7 +80,11 @@ $tasks = $_SESSION['tasks'];
     <?php foreach($tasks as $key => $task) : ?>
 
     <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
-      <input <?php echo $task['status'] == "finish" ? "checked": ""; ?> type="checkbox" name="status">
+      <input
+        <?php echo $task['status'] == "finish" ? "checked": ""; ?>
+        type="checkbox"
+        name="status"
+      />
       <span>
         <?php echo $task['task']; ?>
       </span>
@@ -82,6 +95,8 @@ $tasks = $_SESSION['tasks'];
     <?php endforeach; ?>
     <?php endif; ?>
   </ul>
+
+
 </body>
 
 </html>
