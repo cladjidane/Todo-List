@@ -1,69 +1,40 @@
-
-
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
-//var_dump($_SESSION);
-$notice = null;
 
-// ADD TASK
-if (
-  $_SERVER['REQUEST_METHOD'] == 'POST' && // On est en POST ?
-  isset($_POST['mode']) && // Y a t-il une information de mode
-  $_POST['mode'] == 'add' // Oui, est-ce add ?
-) { // Si oui ↓↓↓
+$notice = '';
+$_SESSION['tasks'] = $_SESSION['tasks'] ?? [];
 
-  $taskName = $_POST['field-task'] ?? '';
-  $selectedTask = $_POST['select-task'] ?? '';
-
-  if (empty($taskName) && empty($selectedTask)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['mode'] === 'add') {
+  $taskName = !empty($_POST['field-task']) ? $_POST['field-task'] : ($_POST['select-task'] ?? '');
+  
+  if (empty($taskName)) {
     $notice = "Le nom de la tâche est vide !";
   } else {
-      if (!isset($_SESSION['tasks'])) {
-        $_SESSION['tasks'] = [];
-      }
-
-      if (!empty($taskName)) {
-        $newTask = array('task' => $taskName, 'id' => count($_SESSION['tasks']) + 1, 'status' => 'wip');
-      } elseif (!empty($selectedTask)) {
-        $newTask = array('task' => $selectedTask, 'id' => count($_SESSION['tasks']) + 1, 'status' => 'wip');
-      }
-
-      $_SESSION['tasks'][] = $newTask;
-
+    $taskId = uniqid();
+    $_SESSION['tasks'][$taskId] = ['task' => $taskName, 'id' => $taskId, 'status' => 'wip'];
     $notice = "Tâche ajoutée avec succès !";
   }
 }
 
-// UPDATE TASK
-if (isset($_GET['mode']) && $_GET['mode'] == 'update' && isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['mode'], $_GET['id'])) {
   $taskId = $_GET['id'];
-  $taskToUpdate = &$_SESSION['tasks'][$taskId - 1];
-
-  $taskToUpdate['status'] = $taskToUpdate['status'] == 'wip' ? 'finish' : 'wip';
-}
-
-// DELETE TASK
-if (isset($_GET['mode']) && $_GET['mode'] == 'delete' && isset($_GET['id'])) {
-  $taskId = $_GET['id'];
-  if (
-    isset($_SESSION['tasks'][$taskId - 1]) &&
-    $_SESSION['tasks'][$taskId - 1]['status'] == 'finish'
-  ) {
-      array_splice($_SESSION['tasks'], $taskId - 1, 1);
-      foreach ($_SESSION['tasks'] as $index => &$task) {
-        $task['id'] = $index + 1;
-      }
+  if ($_GET['mode'] === 'update') {
+    $_SESSION['tasks'][$taskId]['status'] = $_SESSION['tasks'][$taskId]['status'] === 'wip' ? 'finish' : 'wip';
+  } elseif ($_GET['mode'] === 'delete' && $_SESSION['tasks'][$taskId]['status'] === 'finish') {
+    unset($_SESSION['tasks'][$taskId]);
   }
 }
 
 $tasks = $_SESSION['tasks'];
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
+<head>  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Todo</title>
