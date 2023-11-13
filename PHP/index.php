@@ -4,8 +4,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
+//var_dump($_SESSION);
 $notice = null;
 
+// ADD TASK
 if (
   $_SERVER['REQUEST_METHOD'] == 'POST' && // On est en POST ?
   isset($_POST['mode']) && // Y a t-il une information de mode
@@ -34,10 +36,30 @@ if (
   }
 }
 
+// UPDATE TASK
+if (isset($_GET['mode']) && $_GET['mode'] == 'update' && isset($_GET['id'])) {
+  $taskId = $_GET['id'];
+  $taskToUpdate = &$_SESSION['tasks'][$taskId - 1];
+
+  $taskToUpdate['status'] = $taskToUpdate['status'] == 'wip' ? 'finish' : 'wip';
+}
+
+// DELETE TASK
+if (isset($_GET['mode']) && $_GET['mode'] == 'delete' && isset($_GET['id'])) {
+  $taskId = $_GET['id'];
+  if (
+    isset($_SESSION['tasks'][$taskId - 1]) &&
+    $_SESSION['tasks'][$taskId - 1]['status'] == 'finish'
+  ) {
+      array_splice($_SESSION['tasks'], $taskId - 1, 1);
+      foreach ($_SESSION['tasks'] as $index => &$task) {
+        $task['id'] = $index + 1;
+      }
+  }
+}
+
 $tasks = $_SESSION['tasks'];
 ?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -80,16 +102,21 @@ $tasks = $_SESSION['tasks'];
     <?php foreach($tasks as $key => $task) : ?>
 
     <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
-      <input
-        <?php echo $task['status'] == "finish" ? "checked": ""; ?>
-        type="checkbox"
-        name="status"
-      />
-      <span>
-        <?php echo $task['task']; ?>
-      </span>
-      <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete">
+
+      <a  href="?mode=update&id=<?php echo $task['id']; ?>">
+        <input
+          <?php echo $task['status'] == "finish" ? "checked": ""; ?>
+          type="checkbox"
+          name="status"
+        />
       </a>
+
+      <span class="<?php echo $task['status'] == "finish" ? "finished": "wip"; ?>">
+        <?php echo $task['task']; ?> (<?php echo $task['id']; ?> - <?php echo $task['status']; ?>)
+      </span>
+
+      <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete"></a>
+
     </li>
 
     <?php endforeach; ?>
