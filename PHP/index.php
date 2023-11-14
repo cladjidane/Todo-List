@@ -4,7 +4,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
+// $_SESSION['tasks'] = [];
 //var_dump($_SESSION);
+// echo '<pre>';var_dump($_SESSION['tasks']);echo '</pre>';
 $notice = null;
 
 // ADD TASK
@@ -55,7 +57,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'delete' && isset($_GET['id'])) {
       foreach ($_SESSION['tasks'] as $index => &$task) {
         $task['id'] = $index + 1;
       }
-  }
+  } else $notice ="Vous ne pouvez pas supprimer cette tâche !";
 }
 
 $tasks = $_SESSION['tasks'];
@@ -74,7 +76,7 @@ $tasks = $_SESSION['tasks'];
   <h1>Todo List</h1>
   <h2>Gestionnaire de tâches</h2>
 
-  <form class="form-add" method="post" action="">
+  <form class="form-add" method="post" action="/">
 
     <label for="item">Ajouter une tâche</label>
     <div class="fields">
@@ -103,11 +105,12 @@ $tasks = $_SESSION['tasks'];
 
     <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
 
-      <a  href="?mode=update&id=<?php echo $task['id']; ?>">
+      <a href="?mode=update&id=<?php echo $task['id']; ?>">
         <input
           <?php echo $task['status'] == "finish" ? "checked": ""; ?>
           type="checkbox"
           name="status"
+          style="pointer-event: none;"
         />
       </a>
 
