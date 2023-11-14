@@ -3,12 +3,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
 
+echo '<pre>';var_dump($_SESSION);echo '</pre>';
+
 $notice = '';
 $_SESSION['tasks'] = $_SESSION['tasks'] ?? [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['mode'] === 'add') {
   $taskName = !empty($_POST['field-task']) ? $_POST['field-task'] : ($_POST['select-task'] ?? '');
-  
+
   if (empty($taskName)) {
     $notice = "Le nom de la tâche est vide !";
   } else {
@@ -21,9 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['mode'] === 'add') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['mode'], $_GET['id'])) {
   $taskId = $_GET['id'];
   if ($_GET['mode'] === 'update') {
-    $_SESSION['tasks'][$taskId]['status'] = $_SESSION['tasks'][$taskId]['status'] === 'wip' ? 'finish' : 'wip';
+
+    $_SESSION['tasks'][$taskId]['status'] = 
+    $_SESSION['tasks'][$taskId]['status'] === 'wip' ? 'finish' : 'wip';
+
   } elseif ($_GET['mode'] === 'delete' && $_SESSION['tasks'][$taskId]['status'] === 'finish') {
+
     unset($_SESSION['tasks'][$taskId]);
+
   }
 }
 
