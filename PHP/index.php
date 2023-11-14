@@ -3,36 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
 
-echo '<pre>';var_dump($_SESSION);echo '</pre>';
+include('functions.php');
 
-$notice = '';
-$_SESSION['tasks'] = $_SESSION['tasks'] ?? [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['mode'] === 'add') {
-  $taskName = !empty($_POST['field-task']) ? $_POST['field-task'] : ($_POST['select-task'] ?? '');
-
-  if (empty($taskName)) {
-    $notice = "Le nom de la tâche est vide !";
-  } else {
-    $taskId = uniqid();
-    $_SESSION['tasks'][$taskId] = ['task' => $taskName, 'id' => $taskId, 'status' => 'wip'];
-    $notice = "Tâche ajoutée avec succès !";
-  }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['mode'], $_GET['id'])) {
-  $taskId = $_GET['id'];
-  if ($_GET['mode'] === 'update') {
-
-    $_SESSION['tasks'][$taskId]['status'] = 
-    $_SESSION['tasks'][$taskId]['status'] === 'wip' ? 'finish' : 'wip';
-
-  } elseif ($_GET['mode'] === 'delete' && $_SESSION['tasks'][$taskId]['status'] === 'finish') {
-
-    unset($_SESSION['tasks'][$taskId]);
-
-  }
-}
+$notice = controllerTask();
 
 $tasks = $_SESSION['tasks'];
 ?>
@@ -41,7 +14,7 @@ $tasks = $_SESSION['tasks'];
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>  
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Todo</title>
@@ -71,8 +44,8 @@ $tasks = $_SESSION['tasks'];
 
   </form>
 
-  <?php if($notice != null) : ?>
-    <div class="notice"><?php echo $notice; ?></div>
+  <?php if($notice != null || isset($_GET['notice'])) : ?>
+    <div class="notice"><?php echo $notice ? $notice : $_GET['notice']; ?></div>
   <?php endif; ?>
 
   <ul class="list-todo">
