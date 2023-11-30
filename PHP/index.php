@@ -1,9 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
 session_start();
 //$_SESSION['tasks'] = [];
-echo '<pre>';var_dump($_SESSION['tasks']);echo '</pre>';
+//echo '<pre>';var_dump($_SESSION['tasks']);echo '</pre>';
 include('functions.php');
 
 $notice = controllerTask();
