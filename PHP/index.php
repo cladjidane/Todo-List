@@ -2,7 +2,8 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
-
+//$_SESSION['tasks'] = [];
+echo '<pre>';var_dump($_SESSION['tasks']);echo '</pre>';
 include('functions.php');
 
 $notice = controllerTask();
@@ -24,6 +25,7 @@ $tasks = $_SESSION['tasks'];
 <body>
   <h1>Todo List</h1>
   <h2>Gestionnaire de tâches</h2>
+  <h3><?php echo date("d-m-Y"); ?></h3>
 
   <form class="form-add" method="post" action="">
 
@@ -38,6 +40,15 @@ $tasks = $_SESSION['tasks'];
         <option value="Couper l'ordi">Couper l'ordi</option>
       </select>
     </div>
+    <div class="fields">
+    <select name="priority">
+        <option value="1">Urgent</option>
+        <option value="2">Moyen</option>
+        <option value="3">Mineur</option>
+      </select>
+      -
+      <input name="date" type="date" id="date" value="<?php echo date("Y-m-d"); ?>" placeholder="Date de prise en charge" />
+    </div>
     <input type="hidden" name="mode" value="add" />
 
     <button type="submit">Ajouter</button>
@@ -50,6 +61,11 @@ $tasks = $_SESSION['tasks'];
 
   <ul class="list-todo">
     <?php if($tasks) : ?>
+    <?php
+      usort($tasks, function($a, $b) {
+        return $a['priority'] - $b['priority'];
+      });
+    ?>
     <?php foreach($tasks as $key => $task) : ?>
 
     <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
@@ -63,7 +79,9 @@ $tasks = $_SESSION['tasks'];
       </a>
 
       <span class="<?php echo $task['status'] == "finish" ? "finished": "wip"; ?>">
-        <?php echo $task['task']; ?> (<?php echo $task['id']; ?> - <?php echo $task['status']; ?>)
+        [<?php echo $task['priority']; ?>]
+        <?php echo $task['task']; ?>
+        <?php echo checkTaskDeadline($task); ?>
       </span>
 
       <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete"></a>

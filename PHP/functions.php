@@ -1,5 +1,22 @@
 <?php
 
+function checkTaskDeadline($task) {
+  $currentDate = new DateTime(); 
+  $taskDate = DateTime::createFromFormat('Y-m-d', $task['date']);
+  $dateFormatted = $taskDate->format('d-m-Y');
+
+  if ($taskDate < $currentDate) {
+      $daysPassed = $currentDate->diff($taskDate)->format('%a');
+      $daysLimits = ['1' => 1, '2' => 3, '3' => 7];
+
+      if ($daysPassed > $daysLimits[$task['priority']]) {
+          return "<span><span class=\"late\"></span>$dateFormatted ($daysPassed jour" . ($daysPassed > 1 ? 's' : '') . ")</span>";
+      }
+  }
+
+  return "<span><span class=\"on-time\"></span>$dateFormatted</span>";
+}
+
 function controllerTask(){
   $notice = '';
   $request_mode = $_REQUEST['mode'] ?? null;
@@ -23,13 +40,15 @@ function controllerTask(){
 
 function addTask($data) {
   $taskName = !empty($data['field-task']) ? $data['field-task'] : ($data['select-task'] ?? '');
+  $taskPriority = $data['priority'];
+  $taskDate = $data['date'];
 
   if (empty($taskName)) {
     redirect_to('Veuillez saisir une tâche');
   }
 
   $taskId = uniqid();
-  $_SESSION['tasks'][$taskId] = ['task' => $taskName, 'id' => $taskId, 'status' => 'wip'];
+  $_SESSION['tasks'][$taskId] = ['task' => $taskName, 'id' => $taskId, 'status' => 'wip', 'priority' => $taskPriority, 'date' => $taskDate];
   redirect_to('La tâche a bien été ajoutée');
 }
 
