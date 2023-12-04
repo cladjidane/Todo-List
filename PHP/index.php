@@ -1,14 +1,11 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-session_start();
-//$_SESSION['tasks'] = [];
-//echo '<pre>';var_dump($_SESSION['tasks']);echo '</pre>';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 include('functions.php');
 
 $notice = controllerTask();
 
-$tasks = $_SESSION['tasks'];
+$tasks = getTasks();
 ?>
 
 
@@ -70,7 +67,7 @@ $tasks = $_SESSION['tasks'];
 
     <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
 
-      <a  href="?mode=update&id=<?php echo $task['id']; ?>">
+      <a  href="?mode=update&id=<?php echo $task['id']; ?>&status=<?php echo $task['status']; ?>">
         <input
           <?php echo $task['status'] == "finish" ? "checked": ""; ?>
           type="checkbox"
