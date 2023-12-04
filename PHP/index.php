@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 include('functions.php');
 
-$notice = controllerTask();
+$notice = $taskManager->controllerTask();
 
-$tasks = getTasks();
+$tasks = $taskManager->getTasks();
 ?>
 
 
@@ -78,7 +78,7 @@ $tasks = getTasks();
       <span class="<?php echo $task['status'] == "finish" ? "finished": "wip"; ?>">
         [<?php echo $task['priority']; ?>]
         <?php echo $task['task']; ?>
-        <?php echo checkTaskDeadline($task); ?>
+        <?php echo $taskManager->checkTaskDeadline($task); ?>
       </span>
 
       <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete"></a>
