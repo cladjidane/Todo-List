@@ -1,11 +1,11 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-include('functions.php');
+include('class.taskManager.php');
 
-$notice = $taskManager->controllerTask();
-
-$tasks = $taskManager->getTasks();
+$notice = $taskManager->getNotice();
+$tasksWip = $taskManager->getTasks('wip');
+$tasksFinish = $taskManager->getTasks('finish');
 ?>
 
 
@@ -38,7 +38,7 @@ $tasks = $taskManager->getTasks();
       </select>
     </div>
     <div class="fields">
-    <select name="priority">
+      <select name="priority">
         <option value="1">Urgent</option>
         <option value="2">Moyen</option>
         <option value="3">Mineur</option>
@@ -52,43 +52,52 @@ $tasks = $taskManager->getTasks();
 
   </form>
 
-  <?php if($notice != null || isset($_GET['notice'])) : ?>
+  <?php if ($notice != null || isset($_GET['notice'])) : ?>
     <div class="notice"><?php echo $notice ? $notice : $_GET['notice']; ?></div>
   <?php endif; ?>
 
-  <ul class="list-todo">
-    <?php if($tasks) : ?>
-    <?php
-      usort($tasks, function($a, $b) {
-        return $a['priority'] - $b['priority'];
-      });
-    ?>
-    <?php foreach($tasks as $key => $task) : ?>
+  <div class="lists-tasks">
+    <div>
+      <h4>Tâches en cours</h4>
+      <ul class="list-todo">
+        <?php if ($tasksWip) : ?>
+          <?php foreach ($tasksWip as $key => $task) : ?>
 
-    <li class="<?php echo $task['status'] == "finish" ? "ok": ""; ?>">
+            <li class="<?php echo $task['status'] == "finish" ? "ok" : ""; ?>">
+              <a href="?mode=update&id=<?php echo $task['id']; ?>&status=<?php echo $task['status']; ?>">
+                <input <?php echo $task['status'] == "finish" ? "checked" : ""; ?> type="checkbox" name="status" />
+              </a>
+              <span class="<?php echo $task['status'] == "finish" ? "finished" : "wip"; ?>">
+                [<?php echo $task['priority']; ?>]
+                <?php echo $task['task']; ?>
+                <?php echo $taskManager->checkTaskDeadline($task); ?>
+              </span>
+            </li>
 
-      <a  href="?mode=update&id=<?php echo $task['id']; ?>&status=<?php echo $task['status']; ?>">
-        <input
-          <?php echo $task['status'] == "finish" ? "checked": ""; ?>
-          type="checkbox"
-          name="status"
-        />
-      </a>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </ul>
+    </div>
 
-      <span class="<?php echo $task['status'] == "finish" ? "finished": "wip"; ?>">
-        [<?php echo $task['priority']; ?>]
-        <?php echo $task['task']; ?>
-        <?php echo $taskManager->checkTaskDeadline($task); ?>
-      </span>
+    <div>
+      <h4>Tâches terminées</h4>
+      <ul class="list-todo">
+        <?php if ($tasksFinish) : ?>
+          <?php foreach ($tasksFinish as $key => $task) : ?>
 
-      <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete"></a>
+            <li class="<?php echo $task['status'] == "finish" ? "ok" : ""; ?>">
+              <span class="finished">
+                [<?php echo $task['priority']; ?>]
+                <?php echo $task['task']; ?>
+              </span>
+              <a href="?mode=delete&id=<?php echo $task['id']; ?>" class="btdelete"></a>
+            </li>
 
-    </li>
-
-    <?php endforeach; ?>
-    <?php endif; ?>
-  </ul>
-
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
 
 </body>
 

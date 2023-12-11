@@ -50,11 +50,21 @@ h3 {
   background: rgb(178, 233, 177);
 }
 
-.list-todo {
+.lists-tasks {
   width: 70%;
   max-width: 1200px;
   min-width: 320px;
   margin: 20px auto 0;
+  display: flex;
+  gap: 20px;
+
+}
+
+.lists-tasks > div {
+  width: 100%;
+}
+
+.list-todo {
   list-style-type: none;
 }
 
