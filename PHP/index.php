@@ -1,13 +1,17 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+
+// Inclusion de la classe TaskManager
 include('class.taskManager.php');
 
+// Récupération du message de notification (si présent) depuis TaskManager
 $notice = $taskManager->getNotice();
+
+// Récupération des tâches en cours ('wip') et terminées ('finish') depuis TaskManager
 $tasksWip = $taskManager->getTasks('wip');
 $tasksFinish = $taskManager->getTasks('finish');
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
